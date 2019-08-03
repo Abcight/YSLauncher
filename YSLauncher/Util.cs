@@ -5,18 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace YSLauncher
 {
     public static class Util
     {
+        #region Web utilities
         public static long GetMegaSize(string url)
         {
             MegaApiClient client = new MegaApiClient();
@@ -27,16 +24,6 @@ namespace YSLauncher
             client.Logout();
 
             return size;
-        }
-        public static string GetFilesize(this long byteCount)
-        {
-            string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" };
-            if (byteCount == 0)
-                return "0" + suf[0];
-            long bytes = Math.Abs(byteCount);
-            int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
-            double num = Math.Round(bytes / Math.Pow(1024, place), 1);
-            return (Math.Sign(byteCount) * num).ToString() + suf[place];
         }
         public static Post[] GetPosts(string url, int count)
         {
@@ -59,6 +46,9 @@ namespace YSLauncher
                 return loadedPosts.ToArray();
             }
         }
+        #endregion
+
+        #region Image utilities
         public static Image FitToBox(Image source, Size box)
         {
             float sizeRatio = (float)box.Width / source.Width;
@@ -145,12 +135,36 @@ namespace YSLauncher
             }
             return null;
         }
+        public static GraphicsPath RoundedRect(Rectangle bounds, int radius)
+        {
+            int diameter = radius * 2;
+            Size size = new Size(diameter, diameter);
+            Rectangle arc = new Rectangle(bounds.Location, size);
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(arc, 180, 90);
+            arc.X = bounds.Right - diameter;
+            path.AddArc(arc, 270, 90);
+            arc.Y = bounds.Bottom - diameter;
+            path.AddArc(arc, 0, 90);
+            arc.X = bounds.Left;
+            path.AddArc(arc, 90, 90);
+            path.CloseFigure();
+            return path;
+        }
+        #endregion
+
+        #region String utilities
+        public static string GetMegaLink(string url)
+        {
+
+            return null;
+        }
         public static string GetYouTubeId(string url)
         {
             var regex = @"(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|watch)\/|.*[?&amp;]v=)|youtu\.be\/)([^""&amp;?\/ ]{11})";
 
             var match = Regex.Match(url, regex);
-
+             
             if (match.Success)
             {
                 return match.Groups[1].Value;
@@ -158,26 +172,6 @@ namespace YSLauncher
 
             return url;
         }
-        public static string RemoveHTMLTags(this string text)
-        {
-            return Regex.Replace(text, "<.*?>", "")
-                        .Replace("#8217;", "'");
-        }
-        public static float Clamp(this float value, float min, float max)
-        {
-            if (value < min) value = min;
-            if (value > max) value = max;
-            return value;
-        }
-        public static int Clamp(this int value, int min, int max)
-        {
-            if (value < min) value = min;
-            if (value > max) value = max;
-            return value;
-        }
-        public static float Lerp(this float firstFloat, float secondFloat, float by)
-        {
-            return firstFloat * (1 - by) + secondFloat * by;
-        }
+        #endregion
     }
 }
