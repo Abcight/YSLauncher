@@ -7,7 +7,9 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using WordPressPCL;
 
 namespace YSLauncher
 {
@@ -27,6 +29,9 @@ namespace YSLauncher
         }
         public static Post[] GetPosts(string url, int count)
         {
+            var client = new WordPressClient(string.Format("https://public-api.wordpress.com/rest/v1.1/sites/{0}/posts/", url));
+
+            var posts = client.Posts.GetAll();
             using (System.Net.WebClient webClient = new System.Net.WebClient())
             {
                 string blogUrl = string.Format("https://public-api.wordpress.com/rest/v1.1/sites/{0}/posts/", url);
@@ -172,6 +177,17 @@ namespace YSLauncher
 
             return url;
         }
+        #endregion
+
+        #region Form utilities
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HTCAPTION = 0x2;
+
+        [DllImport("User32.dll")]
+        public static extern bool ReleaseCapture();
+
+        [DllImport("User32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         #endregion
     }
 }

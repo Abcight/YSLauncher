@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.438
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YSLauncher", "YSLauncher\YSLauncher.csproj", "{3ABF72A1-6878-4ED2-A33F-1F42EA336B69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launcher", "YSLauncher\Launcher.csproj", "{3ABF72A1-6878-4ED2-A33F-1F42EA336B69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

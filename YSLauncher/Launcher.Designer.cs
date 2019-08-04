@@ -33,8 +33,9 @@ namespace YSLauncher
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.playButtonBig = new System.Windows.Forms.Button();
             this.installButton = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.DownloadPanel = new System.Windows.Forms.Panel();
             this.DownloadProgressLabel = new YSLauncher.FlatLabel();
             this.DownloadProgressbar = new YSLauncher.ColoredProgressBar();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
@@ -42,10 +43,9 @@ namespace YSLauncher
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.minimizeButton = new System.Windows.Forms.Button();
             this.titleLabel = new System.Windows.Forms.Label();
-            this.playButtonBig = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.DownloadPanel.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,7 +55,7 @@ namespace YSLauncher
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
             this.tableLayoutPanel1.Controls.Add(this.panel2, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.DownloadPanel, 1, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 439);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
@@ -71,6 +71,19 @@ namespace YSLauncher
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(252, 104);
             this.panel2.TabIndex = 2;
+            // 
+            // playButtonBig
+            // 
+            this.playButtonBig.BackColor = System.Drawing.Color.HotPink;
+            this.playButtonBig.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.playButtonBig.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.playButtonBig.ForeColor = System.Drawing.SystemColors.Control;
+            this.playButtonBig.Location = new System.Drawing.Point(3, 3);
+            this.playButtonBig.Name = "playButtonBig";
+            this.playButtonBig.Size = new System.Drawing.Size(246, 62);
+            this.playButtonBig.TabIndex = 5;
+            this.playButtonBig.Text = "Play";
+            this.playButtonBig.UseVisualStyleBackColor = false;
             // 
             // installButton
             // 
@@ -88,14 +101,15 @@ namespace YSLauncher
             this.installButton.UseVisualStyleBackColor = false;
             this.installButton.Click += new System.EventHandler(this.installButton_Click);
             // 
-            // panel1
+            // DownloadPanel
             // 
-            this.panel1.Controls.Add(this.DownloadProgressLabel);
-            this.panel1.Controls.Add(this.DownloadProgressbar);
-            this.panel1.Location = new System.Drawing.Point(261, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(596, 104);
-            this.panel1.TabIndex = 3;
+            this.DownloadPanel.Controls.Add(this.DownloadProgressLabel);
+            this.DownloadPanel.Controls.Add(this.DownloadProgressbar);
+            this.DownloadPanel.Location = new System.Drawing.Point(261, 3);
+            this.DownloadPanel.Name = "DownloadPanel";
+            this.DownloadPanel.Size = new System.Drawing.Size(596, 104);
+            this.DownloadPanel.TabIndex = 3;
+            this.DownloadPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DownloadPanel_MouseDown);
             // 
             // DownloadProgressLabel
             // 
@@ -175,19 +189,6 @@ namespace YSLauncher
             this.titleLabel.TabIndex = 4;
             this.titleLabel.Text = "Yandere Simulator Launcher by Abcight";
             // 
-            // playButtonBig
-            // 
-            this.playButtonBig.FlatStyle = FlatStyle.Popup;
-            this.playButtonBig.BackColor = System.Drawing.Color.HotPink;
-            this.playButtonBig.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.playButtonBig.ForeColor = System.Drawing.SystemColors.Control;
-            this.playButtonBig.Location = new System.Drawing.Point(3, 3);
-            this.playButtonBig.Name = "playButtonBig";
-            this.playButtonBig.Size = new System.Drawing.Size(246, 62);
-            this.playButtonBig.TabIndex = 5;
-            this.playButtonBig.Text = "Play";
-            this.playButtonBig.UseVisualStyleBackColor = false;
-            // 
             // Launcher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -201,10 +202,11 @@ namespace YSLauncher
             this.Text = "Yandere Simulator Launcher";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.DownloadPanel.ResumeLayout(false);
+            this.DownloadPanel.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -213,7 +215,7 @@ namespace YSLauncher
 
         #endregion
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel DownloadPanel;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         public Button installButton;
         private Panel panel2;

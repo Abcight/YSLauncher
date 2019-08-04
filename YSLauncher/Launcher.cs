@@ -19,7 +19,7 @@ namespace YSLauncher
         public static ProgressBar ProgressBar;
         public static Label StatusLabel;
 
-        private Size blogtabSize = new Size(250, 300);
+        private List<BlogpostTab> blogTabs = new List<BlogpostTab>();
 
         public Launcher()
         {
@@ -72,6 +72,20 @@ namespace YSLauncher
             installButton.Toggle(false);
             Task.Run(()=>loadData());
         }
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Normal && blogTabs.Count!=0)
+            {
+                int tabSpacing = Settings.BlogTabSpacing;
+                int allPostWidth = LauncherData.Posts.Length * (Settings.BlogTabSize.Width + tabSpacing);
+                int postOffset = Settings.BlogTabSize.Width / 2 + (Width - allPostWidth) / 2;
+                for (int i = 0; i < blogTabs.Count; i++)
+                {
+                    blogTabs[i].Position = new Point(postOffset + i * (blogTabs[i].Size.Width + tabSpacing), 200);
+                    blogTabs[i].Draw();
+                }
+            }
+        }
         public static void EvaluateLoadedData()
         {
             if (LauncherData.BuildState == BuildState.NotDownloaded)
@@ -114,7 +128,7 @@ namespace YSLauncher
                 BlogpostData postData = new BlogpostData();
                 postData.Text = post.content.RemoveHTMLTags();
                 postData.Title = post.title;
-                postData.Thumbnail = Util.FitToBox(Util.GetThumbnail(post.URL), blogtabSize);
+                postData.Thumbnail = Util.FitToBox(Util.GetThumbnail(post.URL), Settings.BlogTabSize);
                 newsData.Add(postData);
             }
 
@@ -123,8 +137,8 @@ namespace YSLauncher
         async Task instantiateBlogTabs(BlogpostData[] data)
         {
             int tabSpacing = 20;
-            int allPostWidth = LauncherData.Posts.Length * (blogtabSize.Width + tabSpacing);
-            int postOffset = 125 + (Width - allPostWidth) / 2;
+            int allPostWidth = LauncherData.Posts.Length * (Settings.BlogTabSize.Width + tabSpacing);
+            int postOffset = Settings.BlogTabSize.Width/2 + (Width - allPostWidth) / 2;
             for (int i = 0; i < LauncherData.Posts.Length; i++)
             {
                 await Task.Delay(100);
@@ -132,9 +146,10 @@ namespace YSLauncher
                 BlogpostTab postTab = new BlogpostTab(Controls, post.URL);
                 postTab.Data = data[i];
                 postTab.Offset.X = 1000;
-                postTab.Size = blogtabSize;
+                postTab.Size = Settings.BlogTabSize;
                 postTab.Position = new Point(postOffset + i * (postTab.Size.Width + tabSpacing), 200);
                 postTab.Draw();
+                blogTabs.Add(postTab);
                 LerpTab(postTab);
             }
         }
@@ -148,12 +163,6 @@ namespace YSLauncher
             }
             return true;
         }
-
-        private void playButton_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         private void closeButton_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -167,6 +176,15 @@ namespace YSLauncher
         private void installButton_Click(object sender, EventArgs e)
         {
             Updater.DownloadGame();
+        }
+
+        private void DownloadPanel_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                Util.ReleaseCapture();
+                Util.SendMessage(Handle, Util.WM_NCLBUTTONDOWN, Util.HTCAPTION, 0);
+            }
         }
     }
 }
