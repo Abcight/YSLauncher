@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace YSLauncher
@@ -29,7 +25,7 @@ namespace YSLauncher
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             if (DrawShadow)
             {
-                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(100, 0, 0, 0)), 0, 0, Width, Height);
+                e.Graphics.FillRectangle(new SolidBrush(Util.Transparent()), 0, 0, Width, Height);
             }
             e.Graphics.FillRectangle(new SolidBrush(rectangleColor), 0, 0, drawSize.Width, drawSize.Height);
 
@@ -38,7 +34,7 @@ namespace YSLauncher
             format.LineAlignment = StringAlignment.Center;
             format.Alignment = StringAlignment.Center;
             int shadowOffset = ((int)Math.Ceiling((drawFont.SizeInPoints / 8))).Clamp(1, 8);
-            e.Graphics.DrawString(Text, drawFont, new SolidBrush(Color.FromArgb(100,0,0,0)), shadowOffset+Width / 2, shadowOffset+Height / 2, format);
+            e.Graphics.DrawString(Text, drawFont, new SolidBrush(Util.Transparent()), shadowOffset +Width / 2, shadowOffset+Height / 2, format);
             e.Graphics.DrawString(Text, drawFont, new SolidBrush(ForeColor), Width/2, Height/2, format);
         }
         protected override void OnResize(EventArgs e)

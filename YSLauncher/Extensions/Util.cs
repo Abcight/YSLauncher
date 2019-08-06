@@ -54,8 +54,8 @@ namespace YSLauncher
         {
             float sizeRatio = (float)box.Width / source.Width;
 
-            float width = ((float)source.Width) * sizeRatio;
-            float height = ((float)source.Height) * sizeRatio;
+            float width = (source.Width) * sizeRatio;
+            float height = (source.Height) * sizeRatio;
             int roundWidth = (int)Math.Ceiling(width);
             int roundHeight = (int)Math.Ceiling(height);
             Bitmap resized = ResizeImage(source, new Size(roundWidth, roundHeight));
@@ -77,7 +77,7 @@ namespace YSLauncher
                 System.Net.WebClient client = new System.Net.WebClient();
                 string html = client.DownloadString(url);
 
-                HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                HtmlDocument doc = new HtmlDocument();
                 doc.LoadHtml(html);
 
                 #region Image thumbnail
@@ -268,6 +268,13 @@ namespace YSLauncher
             int nWidthEllipse,
             int nHeightEllipse
         );
+        #endregion
+
+        #region Color utilities
+        public static Color Transparent()
+        {
+            return Color.FromArgb(100,0,0,0);
+        }
         #endregion
     }
 }

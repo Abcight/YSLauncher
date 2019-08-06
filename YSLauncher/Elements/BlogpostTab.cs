@@ -1,12 +1,5 @@
-﻿using HtmlAgilityPack;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.Control;
 
@@ -28,7 +21,7 @@ namespace YSLauncher
 
         private PictureBox thumbnailBox = new PictureBox();
         private Label titleLabel = new Label();
-        private Label contentLabel = new FlatLabel();
+        private FlatLabel contentLabel = new FlatLabel();
         private Button continueReading = new FlatButton();
         private Panel shadowPanel = new Panel();
 
@@ -45,11 +38,11 @@ namespace YSLauncher
             #region Set elements color
             thumbnailBox.BackColor = Color.Azure;
             titleLabel.Parent = thumbnailBox;
-            titleLabel.BackColor = Color.FromArgb(100,0,0,0);
+            titleLabel.BackColor = Util.Transparent();
             titleLabel.ForeColor = Color.White;
             contentLabel.BackColor = Color.HotPink;
             continueReading.BackColor = Color.HotPink;
-            shadowPanel.BackColor = Color.FromArgb(100, 0, 0, 0);
+            shadowPanel.BackColor = Util.Transparent();
             #endregion
 
             #region Set up the continue reading button
@@ -66,8 +59,9 @@ namespace YSLauncher
 
             #region Set up labels and buttons
             continueReading.Font = new Font(Fonts.Odin, 12, FontStyle.Bold);
-            contentLabel.Font = new Font(Fonts.Odin, 14, FontStyle.Regular);
+            contentLabel.Font = new Font(Fonts.Odin, 16, FontStyle.Regular);
             contentLabel.ForeColor = Color.White;
+            contentLabel.Centered = true;
             #endregion
 
             thumbnailBox.SizeMode = PictureBoxSizeMode.Normal;
@@ -92,6 +86,7 @@ namespace YSLauncher
 
             titleLabel.Size = new Size(drawSize.Width, sizeUnit*3);
 
+            //Make elements round
             shadowPanel.Region = Region.FromHrgn(Util.CreateRoundRectRgn(0, 0, Size.Width, Size.Height, 50, 50));
             thumbnailBox.Region = Region.FromHrgn(Util.CreateRoundRectRgn(0, 0, Size.Width, Size.Height, 50, 50));
             continueReading.Region = Region.FromHrgn(Util.CreateRoundRectRgn(0, -50, Size.Width, continueReading.Height, 50, 50));

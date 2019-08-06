@@ -1,26 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace YSLauncher
 {
     public class FlatLabel : Label
     {
-        public float GradientAngle;
+        public bool Centered;
         public bool DrawShadow = true;
         protected override void OnPaint(PaintEventArgs e)
         {
             Font drawFont = new Font(Fonts.Odin, Font.SizeInPoints - 1, Font.Style);
             int shadowOffset = ((int)Math.Ceiling((drawFont.SizeInPoints / 8))).Clamp(1, 8);
 
+            StringFormat format = Centered ? new StringFormat() : null;
+            if (Centered)
+            {
+                format.LineAlignment = StringAlignment.Center;
+                format.Alignment = StringAlignment.Center;
+            }
+
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            e.Graphics.DrawString(Text, drawFont, new SolidBrush(Color.FromArgb(100, 0, 0, 0)), new Rectangle(shadowOffset, shadowOffset, Width,Height));
-            e.Graphics.DrawString(Text, drawFont, new SolidBrush(ForeColor), new Rectangle(0, 0, Width, Height));
+            e.Graphics.DrawString(Text, drawFont, new SolidBrush(Util.Transparent()), new Rectangle(shadowOffset, shadowOffset, Width,Height), format);
+            e.Graphics.DrawString(Text, drawFont, new SolidBrush(ForeColor), new Rectangle(0, 0, Width, Height), format);
         }
     }
 }

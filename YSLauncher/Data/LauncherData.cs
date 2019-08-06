@@ -13,11 +13,14 @@ namespace YSLauncher
         public static string DataFilePath;
         public static BlogPost[] Posts;
 
-        public static void Load()
+        public static void Setup()
         {
             string appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             DataDirectoryPath = appdataPath + "/YandereSimulator/Launcher";
             DataFilePath = DataDirectoryPath + "/data.json";
+        }
+        public static void Load()
+        {
             if (!Directory.Exists(DataDirectoryPath))
             {
                 Directory.CreateDirectory(DataDirectoryPath);

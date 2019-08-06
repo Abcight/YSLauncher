@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace YSLauncher
@@ -30,7 +25,6 @@ namespace YSLauncher
                 ProgressBarRenderer.DrawHorizontalBar(e.Graphics, e.ClipRectangle);
             rec.Height = rec.Height - 4;
             e.Graphics.FillRectangle(fillBrush, 2, 2, rec.Width, rec.Height);
-            //e.Graphics.DrawRectangle(new Pen(BackColor, 2), 0, 0, Width, Height);
             e.Graphics.DrawRectangle(new Pen(BackColor,2), 0, 0, Width, Height);
         }
     }

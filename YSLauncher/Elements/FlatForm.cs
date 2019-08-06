@@ -50,7 +50,7 @@ namespace YSLauncher
         {
             Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             if(DrawOutline) e.Graphics.DrawRectangle(new Pen(ForeColor, 10), 0, 0, Width, Height);
-            e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(100,0,0,0)), 5, 0, Width, 35);
+            e.Graphics.FillRectangle(new SolidBrush(Util.Transparent()), 5, 0, Width, 35);
             e.Graphics.FillRectangle(new SolidBrush(ForeColor), 0, 0, Width, 30);
             e.Graphics.DrawString(Text, new Font(DefaultFont.FontFamily, 10, FontStyle.Bold), Brushes.White, new Point(10, 8));
         }

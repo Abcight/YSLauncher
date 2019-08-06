@@ -31,6 +31,7 @@ namespace YSLauncher
         
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Launcher));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.playButtonBig = new YSLauncher.FlatButton();
@@ -107,6 +108,7 @@ namespace YSLauncher
             // 
             // DownloadPanel
             // 
+            this.DownloadPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.DownloadPanel.Controls.Add(this.DownloadProgressLabel);
             this.DownloadPanel.Controls.Add(this.DownloadProgressbar);
             this.DownloadPanel.Location = new System.Drawing.Point(261, 3);
@@ -190,7 +192,9 @@ namespace YSLauncher
             this.ClientSize = new System.Drawing.Size(884, 561);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.DoubleBuffered = true;
             this.ForeColor = System.Drawing.Color.HotPink;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Launcher";
             this.Text = "Yandere Simulator Launcher by Abcight";
             this.Load += new System.EventHandler(this.Form1_Load);

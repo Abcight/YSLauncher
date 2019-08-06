@@ -1,12 +1,8 @@
-﻿using HtmlAgilityPack;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -77,7 +73,12 @@ namespace YSLauncher
         private static void onDownloadFinish(object sender, AsyncCompletedEventArgs e)
         {
             Launcher.StatusLabel.Text = "Unzipping...";
-            Task.Run(()=>UnzipGame());
+            Task unzipTask = Task.Run(()=>UnzipGame());
+            while (!unzipTask.IsCompleted)
+            {
+                Application.DoEvents();
+            }
+            Launcher.RegisterUpdate();
         }
         public static async Task UnzipGame()
         {
@@ -87,18 +88,6 @@ namespace YSLauncher
             }
             ZipFile.ExtractToDirectory(contentZipPath, unzippedGamePath);
             File.Delete(contentZipPath);
-
-            Launcher.Instance.Invoke(new MethodInvoker(() =>
-            {
-                Launcher.ProgressBar.Hide();
-                Launcher.StatusLabel.Hide();
-
-                LauncherData.Data.CurrentVersion = LauncherData.Data.NewestVersion;
-                LauncherData.BuildState = BuildState.UpToDate;
-                LauncherData.Flush();
-
-                Launcher.EvaluateLoadedData();
-            }));
         }
     }
 }

@@ -1,14 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Text;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -27,6 +19,7 @@ namespace YSLauncher
         public Launcher()
         {
             Fonts.Load();
+            LauncherData.Setup();
             InitializeComponent();
         }
 
@@ -87,8 +80,17 @@ namespace YSLauncher
                 }
             }
         }
+        public static void RegisterUpdate()
+        {
+            LauncherData.Data.CurrentVersion = LauncherData.Data.NewestVersion;
+            LauncherData.BuildState = BuildState.UpToDate;
+            LauncherData.Flush();
+            EvaluateLoadedData();
+        }
         public static void EvaluateLoadedData()
         {
+            ProgressBar.Hide();
+            StatusLabel.Hide();
             if (LauncherData.BuildState == BuildState.NotDownloaded)
             {
                 PlayButton.Toggle(true);
