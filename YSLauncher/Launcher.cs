@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -14,6 +16,7 @@ namespace YSLauncher
 {
     public partial class Launcher : FlatForm
     {
+        public static Launcher Instance;
         public static Button PlayButton;
         public static Button InstallButton;
         public static ProgressBar ProgressBar;
@@ -23,9 +26,8 @@ namespace YSLauncher
 
         public Launcher()
         {
+            Fonts.Load();
             InitializeComponent();
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            MaximizeBox = false;
         }
 
         #region Render to backbuffer and swap buffers when ready
@@ -40,34 +42,33 @@ namespace YSLauncher
         }
         #endregion
 
-        #region Enable form dragging
-        protected override void WndProc(ref Message m)
-        {
-            base.WndProc(ref m);
-            if (m.Msg == WM_NCHITTEST)
-                m.Result = (IntPtr)(HT_CAPTION);
-        }
-
-        private const int WM_NCHITTEST = 0x84;
-        private const int HT_CLIENT = 0x1;
-        private const int HT_CAPTION = 0x2;
-        #endregion
-
         private void Form1_Load(object sender, EventArgs e)
         {
+            AppDomain.CurrentDomain.FirstChanceException += ErrorForm.HandleException;
             this.Enabled = true;
             this.DownloadProgressbar.Hide();
             this.DownloadProgressLabel.Hide();
 
+            #region Assign globals
             ProgressBar = DownloadProgressbar;
             StatusLabel = DownloadProgressLabel;
             PlayButton = playButtonBig;
             InstallButton = installButton;
+            #endregion
+
+            #region Assign fonts
+            PlayButton.Font = new Font(Fonts.Odin, PlayButton.Font.SizeInPoints, FontStyle.Bold);
+            installButton.Font = new Font(Fonts.Odin, installButton.Font.SizeInPoints, FontStyle.Regular);
+            #endregion
+
+            ((FlatButton)PlayButton).DrawShadow = true;
+            ((FlatButton)InstallButton).DrawShadow = true;
 
             FormBorderStyle = FormBorderStyle.None;
         }
         private void Form1_Shown(object sender, EventArgs e)
         {
+            PlayButton.Text = "Loading...";
             PlayButton.Toggle(false);
             installButton.Toggle(false);
             Task.Run(()=>loadData());
@@ -124,11 +125,11 @@ namespace YSLauncher
             List<BlogpostData> newsData = new List<BlogpostData>();
             for (int i = 0; i < LauncherData.Posts.Length; i++)
             {
-                Post post = LauncherData.Posts[i];
+                BlogPost post = LauncherData.Posts[i];
                 BlogpostData postData = new BlogpostData();
-                postData.Text = post.content.RemoveHTMLTags();
-                postData.Title = post.title;
-                postData.Thumbnail = Util.FitToBox(Util.GetThumbnail(post.URL), Settings.BlogTabSize);
+                postData.Text = post.Content.RemoveHTMLTags();
+                postData.Title = post.Title;
+                postData.Thumbnail = Util.FitToBox(Util.GetThumbnail(post.Url), Settings.BlogTabSize);
                 newsData.Add(postData);
             }
 
@@ -142,16 +143,17 @@ namespace YSLauncher
             for (int i = 0; i < LauncherData.Posts.Length; i++)
             {
                 await Task.Delay(100);
-                Post post = LauncherData.Posts[i];
-                BlogpostTab postTab = new BlogpostTab(Controls, post.URL);
+                BlogPost post = LauncherData.Posts[i];
+                BlogpostTab postTab = new BlogpostTab(Controls, post.Url);
                 postTab.Data = data[i];
                 postTab.Offset.X = 1000;
                 postTab.Size = Settings.BlogTabSize;
-                postTab.Position = new Point(postOffset + i * (postTab.Size.Width + tabSpacing), 200);
+                postTab.Position = new Point(postOffset + i * (Settings.BlogTabSize.Width+ tabSpacing), 200);
                 postTab.Draw();
                 blogTabs.Add(postTab);
                 LerpTab(postTab);
             }
+            Controls.Owner.Update();
         }
         bool LerpTab(BlogpostTab tab)
         {
@@ -161,6 +163,7 @@ namespace YSLauncher
                 tab.Draw();
                 Controls.Owner.Update();
             }
+            Controls.Owner.Update();
             return true;
         }
         private void closeButton_Click(object sender, EventArgs e)
@@ -185,6 +188,11 @@ namespace YSLauncher
                 Util.ReleaseCapture();
                 Util.SendMessage(Handle, Util.WM_NCLBUTTONDOWN, Util.HTCAPTION, 0);
             }
+        }
+
+        private void playButtonBig_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

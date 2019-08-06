@@ -69,5 +69,15 @@ namespace YSLauncher.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] OSP_DIN {
+            get {
+                object obj = ResourceManager.GetObject("OSP_DIN", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

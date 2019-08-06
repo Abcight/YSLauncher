@@ -76,30 +76,29 @@ namespace YSLauncher
         }
         private static void onDownloadFinish(object sender, AsyncCompletedEventArgs e)
         {
-            UnzipGame();
+            Launcher.StatusLabel.Text = "Unzipping...";
+            Task.Run(()=>UnzipGame());
         }
         public static async Task UnzipGame()
         {
-            Launcher.StatusLabel.Text = "Unzipping...";
             if(Directory.Exists(unzippedGamePath))
             {
                 Directory.Delete(unzippedGamePath, true);
             }
             ZipFile.ExtractToDirectory(contentZipPath, unzippedGamePath);
-            Launcher.StatusLabel.Text = "Cleaning up...";
             File.Delete(contentZipPath);
-            OnUnzipFinish();
-        }
-        public static void OnUnzipFinish()
-        {
-            Launcher.ProgressBar.Hide();
-            Launcher.StatusLabel.Hide();
 
-            LauncherData.Data.CurrentVersion = LauncherData.Data.NewestVersion;
-            LauncherData.BuildState = BuildState.UpToDate;
-            LauncherData.Flush();
+            Launcher.Instance.Invoke(new MethodInvoker(() =>
+            {
+                Launcher.ProgressBar.Hide();
+                Launcher.StatusLabel.Hide();
 
-            Launcher.EvaluateLoadedData();
+                LauncherData.Data.CurrentVersion = LauncherData.Data.NewestVersion;
+                LauncherData.BuildState = BuildState.UpToDate;
+                LauncherData.Flush();
+
+                Launcher.EvaluateLoadedData();
+            }));
         }
     }
 }

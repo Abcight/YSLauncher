@@ -1,11 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpYaml.Serialization;
 using System.Net;
+using Newtonsoft.Json;
 
 namespace YSLauncher
 {
@@ -15,24 +11,22 @@ namespace YSLauncher
         public static BuildState BuildState;
         public static string DataDirectoryPath;
         public static string DataFilePath;
-        public static Post[] Posts;
+        public static BlogPost[] Posts;
+
         public static void Load()
         {
-            Serializer yaml = new Serializer();
             string appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             DataDirectoryPath = appdataPath + "/YandereSimulator/Launcher";
-            DataFilePath = DataDirectoryPath + "/data.yml";
+            DataFilePath = DataDirectoryPath + "/data.json";
             if (!Directory.Exists(DataDirectoryPath))
             {
                 Directory.CreateDirectory(DataDirectoryPath);
             }
             if (!File.Exists(DataFilePath))
             {
-                string content = yaml.Serialize(Data);
-                File.WriteAllText(DataFilePath, content);
+                Flush();
             }
-
-            yaml.Deserialize(File.ReadAllText(DataFilePath), Data);
+            Data = JsonConvert.DeserializeObject<Data>(File.ReadAllText(DataFilePath));
             //Get newest version number from the YanSim server
             Data.NewestVersion = int.Parse(new WebClient().DownloadString("http://yanderesimulator.com/version.txt"));
             //Get 3 most recent posts to display in the news feed
@@ -47,12 +41,10 @@ namespace YSLauncher
             {
                 BuildState = BuildState.UpdateAvailable;
             }
-            //Flush();
         }
         public static void Flush()
         {
-            Serializer yaml = new Serializer();
-            string content = yaml.Serialize(Data);
+            string content = JsonConvert.SerializeObject(Data);
             File.WriteAllText(DataFilePath, content);
         }
     }

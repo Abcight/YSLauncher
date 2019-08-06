@@ -33,8 +33,8 @@ namespace YSLauncher
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.playButtonBig = new System.Windows.Forms.Button();
-            this.installButton = new System.Windows.Forms.Button();
+            this.playButtonBig = new YSLauncher.FlatButton();
+            this.installButton = new YSLauncher.FlatButton();
             this.DownloadPanel = new System.Windows.Forms.Panel();
             this.DownloadProgressLabel = new YSLauncher.FlatLabel();
             this.DownloadProgressbar = new YSLauncher.ColoredProgressBar();
@@ -42,7 +42,6 @@ namespace YSLauncher
             this.closeButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.minimizeButton = new System.Windows.Forms.Button();
-            this.titleLabel = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.DownloadPanel.SuspendLayout();
@@ -75,22 +74,27 @@ namespace YSLauncher
             // playButtonBig
             // 
             this.playButtonBig.BackColor = System.Drawing.Color.HotPink;
-            this.playButtonBig.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.playButtonBig.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.playButtonBig.FlatAppearance.BorderSize = 0;
+            this.playButtonBig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.playButtonBig.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.playButtonBig.ForeColor = System.Drawing.SystemColors.Control;
             this.playButtonBig.Location = new System.Drawing.Point(3, 3);
             this.playButtonBig.Name = "playButtonBig";
-            this.playButtonBig.Size = new System.Drawing.Size(246, 62);
+            this.playButtonBig.Size = new System.Drawing.Size(246, 60);
             this.playButtonBig.TabIndex = 5;
             this.playButtonBig.Text = "Play";
             this.playButtonBig.UseVisualStyleBackColor = false;
+            this.playButtonBig.Click += new System.EventHandler(this.playButtonBig_Click);
             // 
             // installButton
             // 
             this.installButton.AccessibleName = "downloadButton";
             this.installButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(99)))), ((int)(((byte)(187)))));
             this.installButton.CausesValidation = false;
-            this.installButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.installButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.installButton.FlatAppearance.BorderSize = 0;
+            this.installButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.installButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.installButton.ForeColor = System.Drawing.SystemColors.Control;
             this.installButton.Location = new System.Drawing.Point(3, 69);
@@ -114,20 +118,21 @@ namespace YSLauncher
             // DownloadProgressLabel
             // 
             this.DownloadProgressLabel.AutoSize = true;
-            this.DownloadProgressLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.DownloadProgressLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.DownloadProgressLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.DownloadProgressLabel.Location = new System.Drawing.Point(0, 39);
             this.DownloadProgressLabel.Name = "DownloadProgressLabel";
-            this.DownloadProgressLabel.Size = new System.Drawing.Size(121, 24);
+            this.DownloadProgressLabel.Size = new System.Drawing.Size(182, 31);
             this.DownloadProgressLabel.TabIndex = 5;
             this.DownloadProgressLabel.Text = "Downloading";
             // 
             // DownloadProgressbar
             // 
-            this.DownloadProgressbar.ForeColor = System.Drawing.Color.LightPink;
+            this.DownloadProgressbar.BackColor = System.Drawing.Color.Purple;
+            this.DownloadProgressbar.ForeColor = System.Drawing.Color.HotPink;
             this.DownloadProgressbar.Location = new System.Drawing.Point(4, 69);
             this.DownloadProgressbar.Name = "DownloadProgressbar";
-            this.DownloadProgressbar.Size = new System.Drawing.Size(589, 32);
+            this.DownloadProgressbar.Size = new System.Drawing.Size(589, 33);
             this.DownloadProgressbar.TabIndex = 4;
             // 
             // closeButton
@@ -177,29 +182,17 @@ namespace YSLauncher
             this.minimizeButton.UseVisualStyleBackColor = true;
             this.minimizeButton.Click += new System.EventHandler(this.minimizeButton_Click);
             // 
-            // titleLabel
-            // 
-            this.titleLabel.AutoSize = true;
-            this.titleLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.titleLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.titleLabel.Location = new System.Drawing.Point(9, 9);
-            this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(231, 13);
-            this.titleLabel.TabIndex = 4;
-            this.titleLabel.Text = "Yandere Simulator Launcher by Abcight";
-            // 
             // Launcher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(211)))));
             this.ClientSize = new System.Drawing.Size(884, 561);
-            this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.ForeColor = System.Drawing.Color.HotPink;
             this.Name = "Launcher";
-            this.Text = "Yandere Simulator Launcher";
+            this.Text = "Yandere Simulator Launcher by Abcight";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
             this.Resize += new System.EventHandler(this.Form1_Resize);
@@ -209,7 +202,6 @@ namespace YSLauncher
             this.DownloadPanel.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -217,15 +209,14 @@ namespace YSLauncher
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel DownloadPanel;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        public Button installButton;
         private Panel panel2;
         private Button closeButton;
         private TableLayoutPanel tableLayoutPanel2;
         private ColoredProgressBar DownloadProgressbar;
-        private Label titleLabel;
         private Button minimizeButton;
         private FlatLabel DownloadProgressLabel;
-        private Button playButtonBig;
+        public FlatButton installButton;
+        private FlatButton playButtonBig;
     }
 }
 
